@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdaptLearn — Presentation Slides</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ========================================
+       PRESENTATION SLIDE DECK — CSS
+       ======================================== */
+        :root {
+            --bg-dark: #0a0e1a;
+            --bg-card: #111827;
+            --bg-surface: #151c2e;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent: #6366f1;
+            --accent-2: #8b5cf6;
+            --accent-gradient: linear-gradient(135deg, #6366f1, #8b5cf6, #a78bfa);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --font: 'Inter', -apple-system, sans-serif;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Slide Container */
+        .slide-deck {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 6rem;
+            opacity: 0;
+            transform: translateX(60px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: all;
+        }
+
+        .slide.exit {
+            opacity: 0;
+            transform: translateX(-60px);
+        }
+
+        /* Slide BG */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at top right, rgba(99, 102, 241, 0.08), transparent 60%),
+                radial-gradient(ellipse at bottom left, rgba(139, 92, 246, 0.06), transparent 60%);
+            pointer-events: none;
+        }
+
+        /* Slide Number */
+        .slide-number {
+            position: absolute;
+            bottom: 1.5rem;
+            right: 2rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .slide-footer {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 2rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            opacity: 0.6;
+        }
+
+        /* Typography */
+        .slide-badge {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: #a78bfa;
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .slide-title {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+            text-align: center;
+            max-width: 900px;
+        }
+
+        .slide-title .gradient {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            text-align: center;
+            max-width: 700px;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        h2.section-head {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        h2.section-head .gradient {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-sub {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 2.5rem;
+            max-width: 650px;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            gap: 1.25rem;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .cards-grid.cols-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .cards-grid.cols-3 {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .cards-grid.cols-4 {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 14px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(99, 102, 241, 0.1);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .card h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+
+        .card p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .card.highlight {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(139, 92, 246, 0.1));
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .card.highlight::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent-gradient);
+            border-radius: 14px 14px 0 0;
+        }
+
+        /* Comparison / Two Column */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .col-panel {
+            background: var(--bg-card);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 14px;
+            padding: 2rem;
+        }
+
+        .col-panel.accent {
+            border-color: rgba(99, 102, 241, 0.3);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.06));
+        }
+
+        .col-label {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .col-label.muted {
+            background: rgba(148, 163, 184, 0.1);
+            color: var(--text-muted);
+        }
+
+        .col-label.purple {
+            background: rgba(99, 102, 241, 0.15);
+            color: #a78bfa;
+        }
+
+        .col-panel ul {
+            list-style: none;
+        }
+
+        .col-panel ul li {
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .col-panel ul li:last-child {
+            border-bottom: none;
+        }
+
+        .check {
+            color: var(--success);
+        }
+
+        .cross {
+            color: var(--text-muted);
+        }
+
+        /* Pipeline / Flow */
+        .pipeline {
+            display: flex;
+            align-items: flex-start;
+            gap: 0;
+            width: 100%;
+            max-width: 1000px;
+            justify-content: center;
+        }
+
+        .pipe-step {
+            background: var(--bg-card);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 14px;
+            padding: 1.5rem 1.25rem;
+            text-align: center;
+            max-width: 200px;
+            flex: 1;
+        }
+
+        .pipe-step:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .pipe-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .pipe-step h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .pipe-step p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .pipe-arrow {
+            font-size: 1.3rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            padding: 0 0.4rem;
+            margin-top: 2rem;
+        }
+
+        /* Stats Row */
+        .stats-row {
+            display: flex;
+            gap: 2.5rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-val {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-lbl {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Bullet List */
+        .bullet-list {
+            list-style: none;
+            width: 100%;
+            max-width: 700px;
+        }
+
+        .bullet-list li {
+            padding: 0.7rem 0;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+        }
+
+        .bullet-list li:last-child {
+            border-bottom: none;
+        }
+
+        .bullet-list .icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        /* Team */
+        .team-grid {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 800px;
+        }
+
+        .team-member {
+            background: var(--bg-card);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 14px;
+            padding: 1.25rem 1.5rem;
+            text-align: center;
+            min-width: 130px;
+        }
+
+        .team-avatar {
+            font-size: 2rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .team-member h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .team-member p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Navigation */
+        .nav-controls {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.75rem;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background: var(--bg-card);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            color: var(--text-primary);
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: var(--font);
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .nav-btn.primary {
+            background: var(--accent-gradient);
+            border: none;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent-gradient);
+            transition: width 0.5s ease;
+            z-index: 100;
+        }
+
+        /* Refs */
+        .ref-list {
+            list-style: none;
+            width: 100%;
+            max-width: 750px;
+        }
+
+        .ref-list li {
+            padding: 0.6rem 0;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+        }
+
+        .ref-list li:last-child {
+            border-bottom: none;
+        }
+
+        .ref-list a {
+            color: #a78bfa;
+            text-decoration: none;
+        }
+
+        .ref-list a:hover {
+            text-decoration: underline;
+        }
+
+        /* Ethical grid */
+        .ethical-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ethical-card .card-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 50px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .tag-privacy {
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+        }
+
+        .tag-bias {
+            background: rgba(245, 158, 11, 0.12);
+            color: #fbbf24;
+        }
+
+        .tag-consent {
+            background: rgba(16, 185, 129, 0.12);
+            color: #34d399;
+        }
+
+        .tag-transparency {
+            background: rgba(59, 130, 246, 0.12);
+            color: #60a5fa;
+        }
+
+        /* Thank You */
+        .thankyou-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .thankyou-link {
+            padding: 10px 22px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .thankyou-link.primary {
+            background: var(--accent-gradient);
+            color: white;
+        }
+
+        .thankyou-link.secondary {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: #a78bfa;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 2rem;
+            }
+
+            .slide-title {
+                font-size: 2rem;
+            }
+
+            h2.section-head {
+                font-size: 1.6rem;
+            }
+
+            .cards-grid.cols-2,
+            .cards-grid.cols-3,
+            .cards-grid.cols-4 {
+                grid-template-columns: 1fr;
+            }
+
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+
+            .pipeline {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .pipe-arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <div class="slide-deck" id="slideDeck">
+
+        <!-- ===================== SLIDE 1: Title ===================== -->
+        <div class="slide active" data-slide="1">
+            <div class="slide-badge">Unit 1 — Self-Learning Activity</div>
+            <h1 class="slide-title">
+                <span class="gradient">AdaptLearn</span><br>
+                AI-Powered Personalized<br>E-Learning Dashboard
+            </h1>
+            <p class="slide-subtitle">
+                An intelligent e-learning platform that uses AI to adapt its interface,
+                content format, and study schedule to each student's unique learning style,
+                pace, and performance.
+            </p>
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="stat-val">3x</div>
+                    <div class="stat-lbl">Faster Learning</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-val">85%</div>
+                    <div class="stat-lbl">Better Retention</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-val">92%</div>
+                    <div class="stat-lbl">Satisfaction</div>
+                </div>
+            </div>
+            <div class="slide-number">1 / 10</div>
+            <div class="slide-footer">AdaptLearn — TY Division</div>
+        </div>
+
+        <!-- ===================== SLIDE 2: Abstract ===================== -->
+        <div class="slide" data-slide="2">
+            <div class="slide-badge">Abstract</div>
+            <h2 class="section-head">Project <span class="gradient">Overview</span></h2>
+            <p class="section-sub">
+                AdaptLearn reimagines online education by moving away from the
+                "one-size-fits-all" approach and delivering a truly personalized
+                learning experience powered by AI.
+            </p>
+            <div class="cards-grid cols-3">
+                <div class="card">
+                    <div class="card-icon">🎯</div>
+                    <h3>The Goal</h3>
+                    <p>Adapt the e-learning dashboard in real-time based on individual student profiles — learning
+                        style, performance, and study habits.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🤖</div>
+                    <h3>The Approach</h3>
+                    <p>Use collaborative filtering, NLP, and predictive analytics to build dynamic learner profiles and
+                        personalize every element of the UI.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📈</div>
+                    <h3>The Impact</h3>
+                    <p>Students learn 3x faster with personalized content, show 85% better retention, and report 92%
+                        higher satisfaction rates.</p>
+                </div>
+            </div>
+            <div class="slide-number">2 / 10</div>
+            <div class="slide-footer">AdaptLearn — TY Division</div>
+        </div>
+
+        <!-- ===================== SLIDE 3: Problem Statement ===================== -->
+        <div class="slide" data-slide="3">
+            <div class="slide-badge">Problem Statement</div>
+            <h2 class="section-head">The <span class="gradient">Problem</span> with E-Learning Today</h2>
+            <p class="section-sub">
+                Traditional e-learning platforms deliver the same experience to every student, ignoring their unique
+                needs.
+            </p>
+            <div class="two-col">
+                <div class="col-panel">
+                    <span class="col-label muted">❌ Current Problems</span>
+                    <ul>
+                        <li><span class="cross">✗</span> One static layout for all learners</li>
+                        <li><span class="cross">✗</span> Visual learners forced to read walls of text</li>
+                        <li><span class="cross">✗</span> Struggling students overwhelmed by content volume</li>
+                        <li><span class="cross">✗</span> Fixed schedules that ignore study habits</li>
+                        <li><span class="cross">✗</span> No identification of weak topics</li>
+                        <li><span class="cross">✗</span> Same deadlines regardless of pace</li>
+                        <li><span class="cross">✗</span> Generic announcements & recommendations</li>
+                    </ul>
+                </div>
+                <div class="col-panel accent">
+                    <span class="col-label purple">✅ Our Solution</span>
+                    <ul>
+                        <li><span class="check">✓</span> AI adapts layout per learning style</li>
+                        <li><span class="check">✓</span> Content format matches preference</li>
+                        <li><span class="check">✓</span> Simplified mode for struggling students</li>
+                        <li><span class="check">✓</span> Schedule aligned with natural habits</li>
+                        <li><span class="check">✓</span> Quick revision for weak areas</li>
+                        <li><span class="check">✓</span> Flexible deadlines based on pace</li>
+                        <li><span class="check">✓</span> Personalized AI recommendations</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-number">3 / 10</div>
+            <div class="slide-footer">AdaptLearn — TY Division</div>
+        </div>
+
+        <!-- ===================== SLIDE 4: UX Personalization Framework ===================== -->
+        <div class="slide" data-slide="4">
+            <div class="slide-badge">UX Personalization Framework</div>
+            <h2 class="section-head">How Does the <span class="gradient">System Decide</span>?</h2>
+            <p class="section-sub">
+                Our framework analyzes three core dimensions to build a unique learner profile.
+            </p>
+            <div class="cards-grid cols-3">
+                <div class="card highlight">
+                    <div class="card-icon">🧠</div>
+                    <h3>Learning Style</h3>
+                    <p><strong>Visual:</strong> Prioritize video thumbnails, infographics,
+                        diagrams.<br><strong>Text:</strong> Show articles, notes, research
+                        papers.<br><strong>Kinesthetic:</strong> Offer interactive labs, quizzes.</p>
+                </div>
+                <div class="card highlight">
+                    <div class="card-icon">📊</div>
+                    <h3>Performance Data</h3>
+                    <p><strong>Struggling topics:</strong> Get simplified explanations &amp; extra
+                        support.<br><strong>Strong topics:</strong> Unlock advanced modules early.<br><strong>Quiz
+                            analysis:</strong> NLP detects misunderstandings.</p>
+                </div>
+                <div class="card highlight">
+                    <div class="card-icon">🕒</div>
+                    <h3>Study Habits</h3>
+                    <p><strong>Night owls:</strong> Evening deadlines &amp; reminders.<br><strong>Morning
+                            persons:</strong> AM study plans.<br><strong>Session length:</strong> Short bursts vs. deep
+                        focus sessions.</p>
+                </div>
+            </div>
+            <div class="slide-number">4 / 10</div>
+            <div class="slide-footer">AdaptLearn — TY Division</div>
+        </div>
+
+        <!-- ===================== SLIDE 5: AI Methodology ===================== -->
+        <div class="slide" data-slide="5">
+            <div class="slide-badge">AI Methodology</div>
+            <h2 class="section-head">The <span class="gradient">AI Engine</span> Behind It</h2>
+            <p class="section-sub">Three AI techniques power the personalization pipeline.</p>
+            <div class="cards-grid cols-3">
+                <div class="card">
+                    <div class="card-icon">🔗</div>
+                    <h3>Collaborative Filtering</h3>
+                    <p>Like Netflix recommendations — analyzes patterns across similar learners. "Students like you also
+                        benefited from..."</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">💬</div>
+                    <h3>Natural Language Processing</h3>
+                    <p>Analyzes quiz answers and written responses to detect specific knowledge gaps and misconceptions.
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🔮</div>
+                    <h3>Predictive Analytics</h3>
+                    <p>Forecasts a student's learning trajectory, suggests optimal deadlines, and predicts which topics
+                        need reinforcement.</p>
+                </div>
+            </div>
+            <div class="pipeline" style="margin-top:2rem;">
+                <div class="pipe-step">
+                    <div class="pipe-icon">📊</div>
+                    <h4>Data Collection</h4>
+                    <p>Clicks, scores, time spent, quiz answers</p>
+                </div>
+                <div class="pipe-arrow">→</div>
+                <div class="pipe-step">
+                    <div class="pipe-icon">🤖</div>
+                    <h4>ML Analysis</h4>
+                    <p>Profile building, pattern recognition</p>
+                </div>
+                <div class="pipe-arrow">→</div>
+                <div class="pipe-step">
+                    <div class="pipe-icon">🎯</div>
+                    <h4>Personalize</h4>
+                    <p>Adapt layout, content, schedule</p>
+                </div>
+                <div class="pipe-arrow">→</div>
+                <div class="pipe-step">
+                    <div class="pipe-icon">📈</div>
+                    <h4>Feedback</h4>
+                    <p>Continuous improvement loop</p>
+                </div>
+            </div>
+            <div class="slide-number">5 / 10</div>
+            <div class="slide-footer">AdaptLearn — TY Division</div>
+        </div>
+
+        <!-- ===================== SLIDE 6: Persona Showcase ===================== -->
+        <div class="slide" data-slide="6">
+            <div class="slide-badge">Before vs After</div>
+            <h2 class="section-head">Three <span class="gradient">Student Personas</span></h2>
+            <p class="section-sub">See how the same dashboard transforms for each unique learner.</p>
+            <div class="cards-grid cols-3">
+                <div class="card">
+                    <div class="card-icon">🎨</div>
+                    <h3>Priya — Visual Learner</h3>
+                    <p>🌙 Night owl study schedule<br>🎬 Video content prioritized<br>🔴 Math struggles → visual
+                        explainers<br>🔄 Infographic revision cards<br>⏰ Evening deadlines</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📚</div>
+                    <h3>Arjun — Text Reader</h3>
+                    <p>☀️ Morning study schedule<br>📄 Articles &amp; notes prioritized<br>🟢 Strong theory → advanced
+                        modules<br>📝 Written problem practice<br>⏰ AM deadlines</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">💪</div>
+                    <h3>Sneha — Struggling</h3>
+                    <p>🌆 Gentle evening schedule<br>🟢 Simplified explanations<br>☕ Frequent breaks built in<br>💬 Peer
+                        tutor access<br>⏰ Extended deadlines</p>
+                </div>
+            </div>
+            <div class="slide-number">6 / 10</div>
+            <div class="slide-footer">AdaptLearn — TY Division</div>
+        </div>
+
+        <!-- ===================== SLIDE 7: Ethical Considerations ===================== -->
+        <div class="slide" data-slide="7">
+            <div class="slide-badge">Ethics & Privacy</div>
+            <h2 class="section-head">Ethical <span class="gradient">Considerations</span></h2>
+            <p class="section-sub">Responsible AI means putting student safety and fairness first.</p>
+            <div class="cards-grid cols-2">
+                <div class="card ethical-card">
+                    <span class="card-tag tag-privacy">Data Privacy</span>
+                    <div class="card-icon">🔒</div>
+                    <h3>Student Data Protection</h3>
+                    <p>All learning data is encrypted end-to-end. Students have full control over what data is
+                        collected. Compliance with FERPA &amp; GDPR education data regulations. No data sold to third
+                        parties — ever.</p>
+                </div>
+                <div class="card ethical-card">
+                    <span class="card-tag tag-bias">Algorithmic Bias</span>
+                    <div class="card-icon">⚖️</div>
+                    <h3>Fairness in AI</h3>
+                    <p>Regular audits to ensure recommendations don't create echo chambers. AI doesn't limit student
+                        potential — struggling students still have access to advanced content. Diverse training data to
+                        prevent demographic bias.</p>
+                </div>
+                <div class="card ethical-card">
+                    <span class="card-tag tag-consent">User Consent</span>
+                    <div class="card-icon">✋</div>
+                    <h3>Informed Consent</h3>
+                    <p>Opt-in personalization — students choose what to share. Clear explanation of what AI tracks and
+                        why. Easy opt-out with zero penalty. Parents/guardians can review data for minors.</p>
+                </div>
+                <div class="card ethical-card">
+                    <span class="card-tag tag-transparency">Transparency</span>
+                    <div class="card-icon">👁️</div>
+                    <h3>Explainable AI</h3>
+                    <p>Students can see WHY a recommendation was made. "We suggested this because your quiz score in
+                        Algebra was 32%." No black-box decisions — full transparency in AI reasoning.</p>
+                </div>
+            </div>
+            <div class="slide-number">7 / 10</div>
+            <div class="slide-footer">AdaptLearn — TY Division</div>
+        </div>
+
+        <!-- ===================== SLIDE 8: Results ===================== -->
+        <div class="slide" data-slide="8">
+            <div class="slide-badge">Results & Expected Outcomes</div>
+            <h2 class="section-head">Expected <span class="gradient">Impact</span></h2>
+            <p class="section-sub">Based on research into AI-driven education platforms.</p>
+            <div class="stats-row" style="margin-bottom:2.5rem;">
+                <div class="stat-item">
+                    <div class="stat-val">3x</div>
+                    <div class="stat-lbl">Faster Concept Mastery</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-val">85%</div>
+                    <div class="stat-lbl">Better Knowledge Retention</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-val">92%</div>
+                    <div class="stat-lbl">Student Satisfaction</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-val">40%</div>
+                    <div class="stat-lbl">Reduced Drop-off</div>
+                </div>
+            </div>
+            <div class="cards-grid cols-2" style="max-width:800px;">
+                <div class="card">
+                    <div class="card-icon">📚</div>
+                    <h3>For Students</h3>
+                    <p>• Content in preferred format (video/text/simplified)<br>• Weak topics identified and addressed
+                        proactively<br>• Study schedule fits their lifestyle<br>• Reduced anxiety with extended
+                        deadlines when needed</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🏫</div>
+                    <h3>For Educators</h3>
+                    <p>• Real-time insights into student struggles<br>• Automated identification of at-risk
+                        students<br>• More efficient use of teaching resources<br>• Data-driven curriculum improvements
+                    </p>
+                </div>
+            </div>
+            <div class="slide-number">8 / 10</div>
+            <div class="slide-footer">AdaptLearn — TY Division</div>
+        </div>
+
+        <!-- ===================== SLIDE 9: Conclusion ===================== -->
+        <div class="slide" data-slide="9">
+            <div class="slide-badge">Conclusion & Impact</div>
+            <h2 class="section-head">The <span class="gradient">Future</span> of Learning</h2>
+            <p class="section-sub">
+                AI-powered personalization isn't just a feature — it's the future of education.
+                Every student deserves a learning experience built for them.
+            </p>
+            <ul class="bullet-list">
+                <li>
+                    <span class="icon">🎯</span>
+                    <span><strong>Personalization is key:</strong> Students learn differently — one-size-fits-all
+                        doesn't work in education.</span>
+                </li>
+                <li>
+                    <span class="icon">🤖</span>
+                    <span><strong>AI enables scale:</strong> Manual personalization for thousands is impossible. AI
+                        makes it automatic and real-time.</span>
+                </li>
+                <li>
+                    <span class="icon">⚖️</span>
+                    <span><strong>Ethics matter:</strong> Student data privacy, algorithmic fairness, and transparency
+                        must be core to any AI education system.</span>
+                </li>
+                <li>
+                    <span class="icon">📈</span>
+                    <span><strong>Measurable impact:</strong> Personalized learning leads to higher engagement, better
+                        retention, and improved outcomes.</span>
+                </li>
+                <li>
+                    <span class="icon">🌍</span>
+                    <span><strong>Broader impact:</strong> This approach can be extended to corporate training,
+                        healthcare education, and lifelong learning.</span>
+                </li>
+            </ul>
+            <div class="slide-number">9 / 10</div>
+            <div class="slide-footer">AdaptLearn — TY Division</div>
+        </div>
+
+        <!-- ===================== SLIDE 10: References & Thank You ===================== -->
+        <div class="slide" data-slide="10">
+            <div class="slide-badge">References & Acknowledgments</div>
+            <h2 class="section-head">References & <span class="gradient">Thank You</span></h2>
+            <p class="section-sub">Resources that informed our project.</p>
+            <ul class="ref-list">
+                <li>📹 Video 1 — <a href="#">AI in UX Design: How Personalization is Changing Interfaces</a></li>
+                <li>📹 Video 2 — <a href="#">Building Adaptive Learning Systems with ML</a></li>
+                <li>📹 Video 3 — <a href="#">Full Workflow: AI-Driven UX Personalization</a></li>
+                <li>📄 Nielsen Norman Group — <a
+                        href="https://www.nngroup.com/articles/personalization/">Personalization vs. Customization in
+                        UX</a></li>
+                <li>📄 IEEE — <a href="#">Adaptive Learning Environments: A Survey</a></li>
+                <li>📄 GDPR / FERPA — <a href="#">Educational Data Privacy Regulations</a></li>
+                <li>🛠️ Tools Used — Figma, HTML/CSS/JS, Inter Font (Google Fonts)</li>
+            </ul>
+
+            <div class="team-grid" style="margin-top:2rem;">
+                <div class="team-member">
+                    <div class="team-avatar">👤</div>
+                    <h4>Member 1</h4>
+                    <p>Prototype</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">👤</div>
+                    <h4>Member 2</h4>
+                    <p>Prototype</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">👤</div>
+                    <h4>Member 3</h4>
+                    <p>Research</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">👤</div>
+                    <h4>Member 4</h4>
+                    <p>Slides</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">👤</div>
+                    <h4>Member 5</h4>
+                    <p>Slides</p>
+                </div>
+            </div>
+
+            <div class="thankyou-links" style="margin-top:1.5rem;">
+                <a href="../elearning-dashboard/index.html" class="thankyou-link primary">🎯 View Live Prototype</a>
+            </div>
+
+            <div class="slide-number">10 / 10</div>
+            <div class="slide-footer">AdaptLearn — TY Division</div>
+        </div>
+
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-controls">
+        <button class="nav-btn" id="prevBtn" onclick="prevSlide()">← Previous</button>
+        <button class="nav-btn primary" id="nextBtn" onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 10;
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach(s => {
+                s.classList.remove('active', 'exit');
+            });
+
+            const target = document.querySelector(`[data-slide="${n}"]`);
+            if (target) {
+                // Previous slides get exit class
+                slides.forEach(s => {
+                    const sn = parseInt(s.dataset.slide);
+                    if (sn < n) s.classList.add('exit');
+                });
+                target.classList.add('active');
+            }
+
+            // Update progress bar
+            const progress = (n / totalSlides) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+
+            // Update buttons
+            document.getElementById('prevBtn').style.visibility = n === 1 ? 'hidden' : 'visible';
+            document.getElementById('nextBtn').textContent = n === totalSlides ? '✓ Done' : 'Next →';
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+            if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        });
+
+        // Initialize
+        showSlide(1);
+    </script>
+
+</body>
+
+</html>
